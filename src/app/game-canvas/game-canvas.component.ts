@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import {GameLogicService} from '../game-logic.service';
 import { interval } from 'rxjs';
 
@@ -10,6 +10,8 @@ import { interval } from 'rxjs';
 export class GameCanvasComponent implements OnInit {
 
   intervalTemp:any;
+  rightArrowClicked:boolean = false;
+  leftArrowClicked:boolean = false;
   constructor(private gameLogicService:GameLogicService) { }
 
   ngOnInit(): void {
@@ -18,11 +20,34 @@ export class GameCanvasComponent implements OnInit {
     this.gameLogicService.setCanvasProperty(test);
   }
 
+  @HostListener('window:keydown', ['$event'])
+  keyEventUp(event: KeyboardEvent) {
+    if(event.key == 'ArrowRight')
+    {
+      this.rightArrowClicked = true;
+      //console.log("down",event.key);
+    }
+    if(event.key == 'ArrowLeft')
+    {
+      this.leftArrowClicked = true;
+      //console.log("down",event.key);
+    }    
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEventDown(event: KeyboardEvent) {
+    if(event.key == 'ArrowRight' || event.key == 'ArrowLeft')
+    {
+      this.rightArrowClicked = false;
+      this.leftArrowClicked = false;
+    }
+  }
+
   startGame(){
     
-    // this.intervalTemp = interval(100).subscribe((func => {
-    //   this.gameLogicService.startPlaying();
-    // }))
+    this.intervalTemp = interval(100).subscribe((func => {
+      this.gameLogicService.startPlaying(this.rightArrowClicked,this.leftArrowClicked);
+    }))
   }
   stopGame(){
     console.log("Stoping");

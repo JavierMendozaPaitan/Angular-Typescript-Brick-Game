@@ -62,8 +62,9 @@ export class GameLogicService {
   }
   
 
-  startPlaying(){
+  startPlaying( rightKeyPressed:boolean,leftKeyPressed:boolean){
     console.log("playing");
     this.buildBricks();
+    console.log(rightKeyPressed,leftKeyPressed);
   }
 }
