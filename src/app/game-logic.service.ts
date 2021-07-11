@@ -7,6 +7,7 @@ export class GameLogicService {
 
   canvas:any;
   ctx:any;
+  scoreH1:any;
 
   x = 100;
   y = 100;
@@ -31,10 +32,11 @@ export class GameLogicService {
     
    }
 
-  setCanvasProperty(_canvas:any){
+  setCanvasProperty(_canvas:any, scoreH1:any){
     console.log("service called");
     this.canvas = _canvas;
     this.ctx = this.canvas.getContext('2d');
+    this.scoreH1 = scoreH1;
     this.paddleX = this.canvas.width/2-this.paddleWidth/2;
     this.paddleY = this.canvas.height-this.paddleHeight;
   }
@@ -42,7 +44,7 @@ export class GameLogicService {
   {
     if(rightKeyPressed)
         {
-            if(this.paddleX+80<this.canvas.width)
+            if(this.paddleX+this.paddleWidth<this.canvas.width)
             {
                 this.paddleX+=20;
             }
@@ -67,8 +69,6 @@ export class GameLogicService {
       {
           this.xCollisionDetect = false;
       }
-  
-  
       if(!this.xCollisionDetect)
       {
           this.x+=this.ballMoveOffset;
@@ -80,14 +80,13 @@ export class GameLogicService {
       
       if(this.y==this.canvas.height-30)
       {
-          if(this.x<this.paddleX+80 && this.x>this.paddleX)
+          if(this.x<this.paddleX+this.paddleWidth && this.x>this.paddleX)
           {
               this.yCollisionDetect = true;
           }
           else{
               alert("game over");
               document.location.reload();
-              //clearInterval(interval);
           }
       } 
       
@@ -97,15 +96,12 @@ export class GameLogicService {
           {
               if(this.brickStatus[i]==1)
               {
-                  if(this.x<this.brickCoordinateX[i]+80 && this.x>this.brickCoordinateX[i] &&
-                      this.y<this.brickCoordinateY[i]+20 && this.y>this.brickCoordinateY[i])
+                  if(this.x<this.brickCoordinateX[i]+this.paddleWidth && this.x>this.brickCoordinateX[i] &&
+                      this.y<this.brickCoordinateY[i]+this.paddleHeight && this.y>this.brickCoordinateY[i])
                   {
-                      
                       this.yCollisionDetect = false;
                       this.scoreGet+=1;
-                      //this.score.innerText=this.scoreGet;
-
-                      console.log('hitted',this.y, this.brickCoordinateY[i],i);
+                      this.scoreH1.innerText= "Score: " + this.scoreGet;
                       this.brickStatus[i]=0;
                       
                   }
@@ -126,7 +122,6 @@ export class GameLogicService {
       else if(this.yCollisionDetect){
           this.y-=this.ballMoveOffset;
       }
-      //console.log(this.x,'sd',this.y);
   }
   
   buildBall()
@@ -154,7 +149,6 @@ export class GameLogicService {
       let inlineBricks = 5;
       for(let i=0;i<totalBricks;i++)
       {
-          //this.brickStatus[i]=1;
           brickX = i%inlineBricks;
           brickY = Math.floor( i/inlineBricks );
           this.ctx.beginPath();
@@ -176,13 +170,11 @@ export class GameLogicService {
   
 
   startPlaying( rightKeyPressed:boolean,leftKeyPressed:boolean){
-    //console.log("playing");
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.buildBricks();
     this.setKeyboardCordinates(rightKeyPressed,leftKeyPressed);
     this.changeBallCordinates();
     this.buildPaddle();
     this.buildBall();
-    //console.log(rightKeyPressed,leftKeyPressed);
   }
 }

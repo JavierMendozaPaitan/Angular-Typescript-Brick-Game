@@ -16,8 +16,10 @@ export class GameCanvasComponent implements OnInit {
 
   ngOnInit(): void {
     
-    let test = document.querySelector('canvas');
-    this.gameLogicService.setCanvasProperty(test);
+    let canvas = document.querySelector('canvas');
+    let scoreH1 = document.querySelector('#scoreCount');
+    this.gameLogicService.setCanvasProperty(canvas,scoreH1);
+    this.gameLogicService.startPlaying(this.rightArrowClicked,this.leftArrowClicked);
   }
 
   @HostListener('window:keydown', ['$event'])
