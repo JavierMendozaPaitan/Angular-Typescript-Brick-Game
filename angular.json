@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Angular-Typescript-Brick-Game:build:production"
+              "buildTarget": "Angular-Typescript-Brick-Game:build:production"
             },
             "development": {
-              "browserTarget": "Angular-Typescript-Brick-Game:build:development"
+              "buildTarget": "Angular-Typescript-Brick-Game:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Angular-Typescript-Brick-Game:build"
+            "buildTarget": "Angular-Typescript-Brick-Game:build"
           }
         },
         "test": {
